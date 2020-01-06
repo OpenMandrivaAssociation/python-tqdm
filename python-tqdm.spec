@@ -1,7 +1,7 @@
 %global modname tqdm
 
 Name:           python-%{modname}
-Version:        4.41.0
+Version:        4.41.1
 Release:        1
 Summary:        A Fast, Extensible Progress Meter
 Group:          Development/Python
