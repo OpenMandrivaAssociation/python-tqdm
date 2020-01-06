@@ -1,10 +1,8 @@
 %global modname tqdm
 
-%bcond_with tests
-
 Name:           python-%{modname}
 Version:        4.41.0
-Release:        %mkrel 1
+Release:        1
 Summary:        A Fast, Extensible Progress Meter
 Group:          Development/Python
 # see PACKAGE-LICENSING for more info
@@ -14,6 +12,13 @@ Source0:        https://github.com/tqdm/tqdm/archive/v%{version}/%{modname}-%{ve
 
 BuildArch:      noarch
 
+%{?python_provide:%python_provide python3-%{modname}}
+BuildRequires:  python-devel
+BuildRequires:  python3dist(setuptools)
+
+Recommends:     python3dist(pandas)
+Recommends:     python3dist(numpy)
+
 %global _description \
 tqdm (read taqadum, تقدّم) means "progress" in Arabic.\
 \
@@ -22,25 +27,6 @@ with "tqdm(iterable)", and you are done!
 
 %description %{_description}
 
-%package -n python3-%{modname}
-Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{modname}}
-BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
-%if %{with tests}
-BuildRequires:  python3dist(coverage)
-BuildRequires:  python3dist(flake8)
-BuildRequires:  python3dist(nose)
-BuildRequires:  python3dist(numpy)
-BuildRequires:  python3dist(pandas)
-%endif
-Recommends:     python3dist(pandas)
-Recommends:     python3dist(numpy)
-
-%description -n python3-%{modname} %{_description}
-
-Python 3 version.
-
 %prep
 %autosetup -p1 -n %{modname}-%{version}
 
@@ -48,23 +34,18 @@ Python 3 version.
 rm -rf %{modname}.egg-info
 
 %build
-%py3_build
+%py_build
 
 %install
-%py3_install
+%py_install
 
 mkdir -p %{buildroot}%{_mandir}/man1
-mv -v %{buildroot}%{python3_sitelib}/%{modname}/%{modname}.1 %{buildroot}%{_mandir}/man1/
+mv -v %{buildroot}%{python_sitelib}/%{modname}/%{modname}.1 %{buildroot}%{_mandir}/man1/
 
-%if %{with tests}
-%check
-%{__python3} setup.py test
-%endif
-
-%files -n python3-%{modname}
+%files
 %license LICENCE
 %doc README.rst examples
 %{_bindir}/%{modname}
 %{_mandir}/man1/%{modname}.1*
-%{python3_sitelib}/%{modname}-*.egg-info/
-%{python3_sitelib}/%{modname}/
+%{python_sitelib}/%{modname}-*.egg-info/
+%{python_sitelib}/%{modname}/
