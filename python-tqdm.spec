@@ -2,7 +2,7 @@
 
 Name:           python-%{modname}
 Version:	4.51.0
-Release:	2
+Release:	3
 Summary:        A Fast, Extensible Progress Meter
 Group:          Development/Python
 # see PACKAGE-LICENSING for more info
