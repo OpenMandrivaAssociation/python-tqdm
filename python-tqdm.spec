@@ -1,23 +1,24 @@
 %global modname tqdm
 
 Name:           python-%{modname}
-Version:	4.51.0
-Release:	3
+Version:	4.67.1
+Release:	1
 Summary:        A Fast, Extensible Progress Meter
 Group:          Development/Python
 # see PACKAGE-LICENSING for more info
 License:        MPLv2.0 and MIT
 URL:            https://tqdm.github.io/
-Source0:        https://github.com/tqdm/tqdm/archive/v%{version}/%{modname}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/source/t/tqdm/tqdm-%{version}.tar.gz
 
 BuildArch:      noarch
 
 %{?python_provide:%python_provide python3-%{modname}}
 BuildRequires:  python-devel
-BuildRequires:  python3dist(setuptools)
+BuildRequires:  python%{pyver}dist(setuptools)
+BuildRequires:  python%{pyver}dist(setuptools-scm)
 
-Recommends:     python3dist(pandas)
-Recommends:     python3dist(numpy)
+Recommends:     python%{pyver}dist(pandas)
+Recommends:     python%{pyver}dist(numpy)
 
 %global _description \
 tqdm (read taqadum, تقدّم) means "progress" in Arabic.\
@@ -40,12 +41,12 @@ rm -rf %{modname}.egg-info
 %py_install
 
 mkdir -p %{buildroot}%{_mandir}/man1
-mv -v %{buildroot}%{python_sitelib}/%{modname}/%{modname}.1 %{buildroot}%{_mandir}/man1/
+install -c -m 644 %{modname}/%{modname}.1 %{buildroot}%{_mandir}/man1/
 
 %files
 %license LICENCE
 %doc README.rst examples
 %{_bindir}/%{modname}
 %{_mandir}/man1/%{modname}.1*
-%{python_sitelib}/%{modname}-*.egg-info/
+%{python_sitelib}/%{modname}-*.dist-info/
 %{python_sitelib}/%{modname}/
